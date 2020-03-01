@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const NoteSchema = new mongoose.Schema({
     userId: mongoose.Types.ObjectId,
     text: String,
+    color: String,
 }, {
     timestamps: {
         createdAt: 'created_at',

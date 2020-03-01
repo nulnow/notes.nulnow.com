@@ -88,6 +88,22 @@ async function deleteNote(noteId) {
     })
 }
 
+async function changeNoteColor(noteId, color) {
+    return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+            reject()
+        }, RESPONSE_TIMEOUT)
+        socket.emit('call', {
+            method: 'changeNoteColor',
+            params: { noteId, color },
+            opts: { userId: localStorage.token }
+        }, (result) => {
+            clearTimeout(timeoutId)
+            resolve(result)
+        })
+    })
+}
+
 async function login(username, password) {
     return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {

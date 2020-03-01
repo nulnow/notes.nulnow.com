@@ -68,12 +68,16 @@ NotesService.getNotesByUser = async (userId) => {
         .exec()
 }
 NotesService.updateNoteById = async ({ noteId, newText }) => {
-    return await Note.findByIdAndUpdate(noteId, { text: newText })
+    return await Note.updateOne({ _id: new mongoose.Types.ObjectId(noteId) }, { text: newText })
         .exec()
 }
 NotesService.deleteById = async (noteId) => {
     return await Note.findOneAndDelete(noteId)
         .exec()
+}
+NotesService.changeNoteColor = async (noteId, color) => {
+    await Note.updateOne({ _id: new mongoose.Types.ObjectId(noteId) }, { color }).exec()
+    return await Note.findById(noteId).exec()
 }
 
 UserRepo.list = async () => {
@@ -212,6 +216,12 @@ const apiGateway = async ({ method, params, opts }, done) => {
             status: 'ok',
             code: 200,
             data: await NotesService.deleteById(params.noteId)
+        })
+    } else if (method === 'changeNoteColor') {
+        return done({
+            status: 'ok',
+            code: 200,
+            data: await NotesService.changeNoteColor(params.noteId, params.color)
         })
     }
     done({

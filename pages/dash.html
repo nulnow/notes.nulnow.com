@@ -33,10 +33,18 @@
         </div>
         <h3 class="mt24 mb16">Your notes:</h3>
         <transition-group name="loadevent" class="notes" tag="div" >
-            <div class="note pointer" v-for="note in sortedNotes" v-bind:key="note._id" @click="$event.stopPropagation; openedNoteId = note._id">
+            <div class="note pointer"
+                 v-for="note in sortedNotes"
+                 v-bind:key="note._id"
+                 :style="note.color ? { background: note.color } : {}"
+                 @click="$event.stopPropagation; openedNoteId = note._id">
                 <div class="note__controls">
                     <span class="small-text">{{ createdAtToDisplay(note.created_at) }}</span>
-                    <button class="note-close-btn" @click="$event.stopPropagation; deleteNote(note)"><i class="fas fa-trash"></i></button>
+                    <label for="color" @click="$event.stopPropagation();">
+                        <input id="color" type="color" hidden @change="onNoteColorChange($event, note)">
+                        <i class="fas fa-swatchbook pointer"></i>
+                    </label>
+                    <button class="note-close-btn pointer" @click="$event.stopPropagation(); deleteNote(note)"><i class="fas fa-trash"></i></button>
                 </div>
                 <div class="note__text">
                     {{ note.text }}

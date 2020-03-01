@@ -70,6 +70,13 @@ async function main() {
             onLogoutClick: function() {
                 delete window.localStorage.token
                 window.location.reload()
+            },
+            async onNoteColorChange(event, note) {
+                const color = event.target.value
+                const result = await changeNoteColor(note._id, color)
+                if (result.code === 200) {
+                    this.notes.data = (this.notes.data || []).map(n => n._id === note._id ? result.data : n)
+                }
             }
         }
     })
