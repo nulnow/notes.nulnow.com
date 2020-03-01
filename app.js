@@ -21,6 +21,10 @@ const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
 
+const isUsernameValid = username => {
+    return username.match(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
+}
+
 const accessLogStream = rfs.createStream((time, index) => {
     if (!time) return "file.log"
     const month = time.getFullYear() + "" + pad(time.getMonth() + 1)
@@ -88,6 +92,13 @@ Auth.authenticate = async (opts) => {
     }
 }
 Auth.register = async ({ username, password }) => {
+    if (!username || !password || !isUsernameValid(username)) {
+        return {
+            status: 'Error',
+            code: 400,
+            message: 'Bad request'
+        }
+    }
     const user = await User.findOne({
         username
     })
@@ -149,7 +160,7 @@ const apiGateway = async ({ method, params, opts }, done) => {
     if (method === 'login') {
         return done(await Auth.login(params))
     } else if (method === 'register') {
-        return done(await Auth.register(params))
+        return done(await Auth.register(params || {}))
     }
     if (!user) {
         done({
@@ -163,11 +174,11 @@ const apiGateway = async ({ method, params, opts }, done) => {
         done(new Response.Ok(user))
         return
     } else if (method === 'users') {
-        done({
-            status: 'ok',
-            code: 200,
-            data: await UserRepo.list()
-        })
+        // done({
+        //     status: 'ok',
+        //     code: 200,
+        //     data: await UserRepo.list()
+        // })
         return
     } else if (method === 'addNote') {
         const note = await NotesService.addNote({
@@ -221,7 +232,16 @@ io.on('connection', socket => {
             params,
             opts
         }, done || (() => {
-        }))
+        })).catch(error => {
+            if (typeof done === 'function'){
+                done({
+                    status: 'error',
+                    code: 500,
+                    message: 'server error'
+                })
+            }
+            console.error(error)
+        })
     })
 })
 

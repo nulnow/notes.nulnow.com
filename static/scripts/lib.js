@@ -2,6 +2,15 @@ const RESPONSE_TIMEOUT = 30000
 
 const socket = io()
 
+function createdAtToDisplay(str) {
+    try {
+        return moment(str).format('MMMM Do YYYY, HH:mm:ss')
+    } catch(e) {
+        console.error(e)
+        return str
+    }
+}
+
 async function getProfile() {
     return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {

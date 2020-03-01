@@ -1,4 +1,7 @@
 
+function test() {
+    return 'rew'
+}
 
 async function main() {
     const app = new Vue({
@@ -6,13 +9,34 @@ async function main() {
         data: {
             isLoading: false,
             noteText: '',
+            openedNoteId: null,
             notes: {
                 data: null,
                 isLoading: true,
                 isLoadingError: false,
             }
         },
+        computed: {
+            modalNote() {
+                return (this.notes.data || []).find(n => n._id === this.openedNoteId)
+            },
+            sortedNotes() {
+                return (this.notes.data || []).sort((a, b) => {
+                    const aTime = new Date(a.updated_at)
+                    const bTime = new Date(b.updated_at)
+                    return aTime > bTime ? -1 : aTime < bTime ? 1 : 0
+                })
+            }
+        },
         methods: {
+            createdAtToDisplay: function(str) {
+                try {
+                    return moment(str).format('MMMM Do YYYY, HH:mm:ss')
+                } catch(e) {
+                    console.error(e)
+                    return str
+                }
+            },
             reloadNotes: function() {
                 this.notes.isLoading = true
                 this.notes.isLoadingError = false
@@ -29,9 +53,9 @@ async function main() {
                     })
             },
             deleteNote: async function(note) {
-                await deleteNote(note._id)
                 this.notes.data = (this.notes.data || []).filter(n => n._id !== note._id)
                 document.activeElement.blur()
+                await deleteNote(note._id)
             },
             onAddNoteClick: async function() {
                 const text = this.noteText

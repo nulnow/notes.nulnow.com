@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/sticker.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
@@ -14,7 +17,12 @@
 <div id="auth">
     <transition name="fade">
         <div v-if="isLoading" class="modal fullscreen cc fadeIn">
-            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
     </transition>
     <transition name="fade">
@@ -32,10 +40,18 @@
                 </a>
                 <h2 class="mb16 mt32 cc">Notes app</h2>
                 <div class="form-row mb16">
-                    <input type="text" v-model="username" class="text-field w100p" placeholder="Enter your username..."/>
+                    <input
+                            type="text"
+                            v-model="username"
+                            pattern="^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$"
+                            v-bind:class="{ 'text-field--success': usernameSuccess }"
+                            class="text-field w100p"
+                            placeholder="Enter your username..."/>
                 </div>
                 <div class="form-row mb16 ">
-                    <input type="password" v-model="password" class="text-field w100p" placeholder="Enter your password..."/>
+                    <input type="password" v-model="password" class="text-field w100p"
+                           v-bind:class="{ 'text-field--success': passwordSuccess }"
+                           placeholder="Enter your password..."/>
                 </div>
                 <div class="form-row mb24 cc">
                     <button @click="onLoginClick()" class="btn btn--primary w100p">
@@ -56,10 +72,18 @@
                 </a>
                 <h2 class="mb16 mt32 cc">Notes app</h2>
                 <div class="form-row mb16">
-                    <input type="text" v-model="username" class="text-field w100p" placeholder="Enter your username..."/>
+                    <input
+                            type="text"
+                            v-model="username"
+                            pattern="^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$"
+                            class="text-field w100p"
+                            v-bind:class="{ 'text-field--success': usernameSuccess }"
+                            placeholder="Enter your username..."/>
                 </div>
                 <div class="form-row mb16 ">
-                    <input type="password" v-model="password" class="text-field w100p" placeholder="Enter your password..."/>
+                    <input type="password" v-model="password" class="text-field w100p"
+                           v-bind:class="{ 'text-field--success': passwordSuccess }"
+                           placeholder="Enter your password..."/>
                 </div>
                 <div class="form-row mb24 cc">
                     <button @click="onRegisterClick()" class="btn btn--primary w100p">

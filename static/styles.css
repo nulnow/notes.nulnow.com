@@ -3,6 +3,8 @@ html {
     --secondary-color: #FFF176;
     --primary-color-shadow: rgba(255, 50, 126, 0.27);
     --secondary-color-shadow: rgba(255, 241, 118, 0.21);
+
+    --success: #B2FF59;
 }
 
 * {
@@ -45,12 +47,17 @@ body {
     font-size: 14px;
     font-weight: 700;
 }
-
 .text-field:focus {
     /*outline: 4px solid var(--primary-color);*/
     outline: none;
     /*box-shadow: 0 14px 28px var(--secondary-color), 0 10px 10px var(--primary-color);*/
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.text-field:invalid {
+    box-shadow: 0 1px 3px var(--primary-color), 0 1px 2px var(--primary-color);
+}
+.text-field--success {
+    box-shadow: 0 1px 3px var(--success), 0 1px 2px var(--success);
 }
 
 .btn {
@@ -100,26 +107,44 @@ body {
     height: 230px;
     margin-right: 32px;
     margin-bottom: 40px;
+    color: #212121;
     background: linear-gradient(#FFF9C4, #FFF59D);
     box-shadow: 0 10px 20px rgba(255, 249, 196, 0.52), 0 6px 6px rgba(255, 245, 157, 0.55);
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    overflow: hidden;
 }
 
 .note:hover {
     box-shadow: 0 19px 38px rgba(255, 249, 196, 0.52), 0 15px 12px rgba(255, 245, 157, 0.55);
 }
+.note--modal {
+    width: 90vw;
+    height: 90vh;
+    box-shadow: none;
+}
+.note--modal .note__text {
+    overflow: scroll;
+}
+.note--modal:hover {
+    box-shadow: none;
+}
 
 .note__text {
+    max-height: 100%;
     padding: 8px 24px 24px 24px;
     font-weight: 500;
     line-height: 180%;
+
+    word-break: break-word;
+    overflow: hidden;
 }
 
 .note__controls {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    padding-left: 8px;
     background-color: rgba(0, 0, 0, 0.09);
 }
 
@@ -128,16 +153,15 @@ body {
     padding: 8px;
     height: 40px;
     width: 40px;
-    /*color: var(--primary-color);*/
     color: #212121;
-    font-size: 25px;
+    font-size: 15px;
     font-weight: 500;
     background-color: transparent;
     cursor: pointer;
 }
 
 .note-close-btn:focus {
-    outline: 4px solid var(--primary-color);
+    outline: none;
 }
 
 .mb8 {
@@ -224,6 +248,10 @@ body {
 
 .modal {
     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.11);
 }
 .modal--darken {
@@ -278,4 +306,25 @@ body {
 .loadevent-leave-to {
     opacity: 0;
     transform: translateY(30px);
+}
+
+.scroller::-webkit-scrollbar {
+    width: 1em;
+}
+
+.scroller::-webkit-scrollbar-track {
+    /*background-color: rgba(0, 0, 0, 0.16);*/
+}
+
+.scroller::-webkit-scrollbar-thumb {
+    background-color: rgba(33, 33, 33, 0.23);
+    outline: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.small-text {
+    font-size: 10px;
 }
