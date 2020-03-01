@@ -53,7 +53,8 @@
         </transition-group>
         <transition  name="fade">
             <div class="modal modal--darken cc" v-if="openedNoteId">
-                <div class="note note--modal" v-bind:key="modalNote._id">
+                <div class="note note--modal" v-bind:key="modalNote._id"
+                     :style="modalNote.color ? { background: modalNote.color } : {}">
                     <div class="note__controls">
                         <button class="note-close-btn" @click="openedNoteId = null">
                             <i class="fas fa-times"></i>
