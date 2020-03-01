@@ -1,4 +1,4 @@
-# <a href="notes.nulnow.com">notes.nulnow.com</a>
+# <a href="https://notes.nulnow.com/">notes.nulnow.com</a>
 Simple notes build with Vue.js, Express, Socket.io and Mongodb
 <br/>
 <img src="https://notes.nulnow.com/login.png" />
