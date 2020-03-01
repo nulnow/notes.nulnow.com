@@ -85,6 +85,11 @@ async function main() {
             },
         }
     })
+
+    if ((await isLoggedIn())) {
+        console.log('not logged in')
+        window.location.href = '/dash'
+    }
 }
 
 main()
