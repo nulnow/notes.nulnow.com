@@ -18,8 +18,9 @@ html {
 }
 
 body {
+    min-height: 100vh;
     font-family: 'Montserrat', sans-serif;
-    background-color: rgba(224, 249, 242, 0.52);
+    background-color: #fff;
 }
 
 .form-row {
