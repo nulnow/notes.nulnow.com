@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/sticker.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/spinner.css">
+    <title>Notes</title>
+</head>
+<body>
+<div id="app">
+    <div v-if="isLoading" class="fullscreen cc">
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
+    <div v-if="!isLoading" class="container">
+        <div class="form-row mb16">
+            <span class="link mt8" @click="onLogoutClick()">logout</span>
+        </div>
+        <h2 class="mb16 mt32">Notes App</h2>
+        <div class="form w350">
+            <div class="form-row mb32">
+                <input type="text" v-model="noteText" class="text-field mr8 w100p" placeholder="Type your note here..."/>
+                <button @click="onAddNoteClick()" class="btn btn--primary w200">
+                    Add note
+                </button>
+            </div>
+        </div>
+        <h3 class="mt24 mb16">Your notes:</h3>
+        <transition-group name="loadevent" class="notes" tag="div">
+            <div class="note" v-for="note in (notes.data || [])" v-bind:key="note._id">
+                <div class="note__controls">
+                    <button class="note-close-btn" @click="deleteNote(note)">×</button>
+                </div>
+                <div class="note__text">
+                    {{ note.text }}
+                </div>
+            </div>
+        </transition-group>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="/scripts/lib.js"></script>
+<script src="/scripts/dash.js"></script>
+</body>
+</html>

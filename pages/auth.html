@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/sticker.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/spinner.css">
+    <title>Notes</title>
+</head>
+<body>
+<div id="auth">
+    <transition name="fade">
+        <div v-if="isLoading" class="modal fullscreen cc fadeIn">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </transition>
+    <transition name="fade">
+        <div v-if="errorModal.open" class="modal modal--darken fullscreen cc fadeIn">
+            <h1 class="mb8">{{ errorModal.title }}</h1>
+            <p class="mb24">{{ errorModal.body }}</p>
+            <button class="btn btn--primary" @click="errorModal.open = false">Ok</button>
+        </div>
+    </transition>
+    <div class="container fullscreen cc" v-if="isLogin">
+        <div class="cc">
+            <div class="form">
+                <a href="/">
+                    <img class="mw100p" src="/sticker.png" alt="">
+                </a>
+                <h2 class="mb16 mt32 cc">Notes app</h2>
+                <div class="form-row mb16">
+                    <input type="text" v-model="username" class="text-field w100p" placeholder="Enter your username..."/>
+                </div>
+                <div class="form-row mb16 ">
+                    <input type="password" v-model="password" class="text-field w100p" placeholder="Enter your password..."/>
+                </div>
+                <div class="form-row mb24 cc">
+                    <button @click="onLoginClick()" class="btn btn--primary w100p">
+                        Login
+                    </button>
+                </div>
+                <div class="form-row mb16">
+                    <span class="link cc w100p" @click="isLogin = false">Register</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container fullscreen cc" v-if="!isLogin">
+        <div class="cc">
+            <div class="form">
+                <a href="/">
+                    <img class="mw100p" src="/sticker.png" alt="">
+                </a>
+                <h2 class="mb16 mt32 cc">Notes app</h2>
+                <div class="form-row mb16">
+                    <input type="text" v-model="username" class="text-field w100p" placeholder="Enter your username..."/>
+                </div>
+                <div class="form-row mb16 ">
+                    <input type="password" v-model="password" class="text-field w100p" placeholder="Enter your password..."/>
+                </div>
+                <div class="form-row mb24 cc">
+                    <button @click="onRegisterClick()" class="btn btn--primary w100p">
+                        Register
+                    </button>
+                </div>
+                <div class="form-row mb16">
+                    <span class="link cc w100p" @click="isLogin = true">Login</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="/scripts/lib.js"></script>
+<script src="/scripts/auth.js"></script>
+</body>
+</html>
