@@ -7,8 +7,10 @@ const express = require('express')
 const socketIo = require('socket.io')
 const path = require('path')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const User = require('./models/User')
 const Note = require('./models/Note')
+const rfs = require('rotating-file-stream')
 
 mongoose.connect(MONGO, {
     useNewUrlParser: true,
@@ -18,6 +20,22 @@ mongoose.connect(MONGO, {
 const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
+
+const accessLogStream = rfs.createStream((time, index) => {
+    if (!time) return "file.log"
+    const month = time.getFullYear() + "" + pad(time.getMonth() + 1)
+    const day = pad(time.getDate())
+    const hour = pad(time.getHours())
+    const minute = pad(time.getMinutes())
+    return `${month}/${month}${day}-${hour}${minute}-${index}-file.log`
+}, {
+    size: "1M",
+    interval: "1d",
+    compress: "gzip",
+    path: path.join(__dirname, 'logs'),
+})
+
+app.use(morgan('combined', { stream: accessLogStream }))
 
 app.get('/', (req, res) => res.sendFile(path.resolve('./pages/auth.html')))
 app.get('/dash', (req, res) => res.sendFile(path.resolve('./pages/dash.html')))
